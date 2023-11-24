@@ -47,7 +47,7 @@ import { ImageModule } from './image/image.module';
         appleConfig,
         microserviceConfig,
       ],
-      envFilePath: ['.env'],
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}`],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
