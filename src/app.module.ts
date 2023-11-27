@@ -30,6 +30,7 @@ import { AllConfigType } from './config/config.type';
 import { SessionModule } from './session/session.module';
 import { MailerModule } from './mailer/mailer.module';
 import { ImageModule } from './image/image.module';
+import { HttpProxyModule } from './http-proxy/http-proxy.module';
 
 @Module({
   imports: [
@@ -91,6 +92,7 @@ import { ImageModule } from './image/image.module';
     MailerModule,
     HomeModule,
     ImageModule,
+    HttpProxyModule,
   ],
 })
 export class AppModule {}

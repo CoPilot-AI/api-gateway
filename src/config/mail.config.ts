@@ -26,6 +26,9 @@ class EnvironmentVariablesValidator {
   MAIL_USER: string;
 
   @IsString()
+  CONNECTION_STRING: string;
+
+  @IsString()
   @IsOptional()
   MAIL_PASSWORD: string;
 
@@ -58,5 +61,6 @@ export default registerAs<MailConfig>('mail', () => {
     ignoreTLS: process.env.MAIL_IGNORE_TLS === 'true',
     secure: process.env.MAIL_SECURE === 'true',
     requireTLS: process.env.MAIL_REQUIRE_TLS === 'true',
+    connectionString: process.env.CONNECTION_STRING || '',
   };
 });

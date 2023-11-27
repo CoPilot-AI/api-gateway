@@ -1,4 +1,3 @@
-import HttProxy from 'src/class/http-proxy.service';
 import {
   Controller,
   Get,
@@ -11,6 +10,7 @@ import { AllConfigType } from 'src/config/config.type';
 import { ConfigService } from '@nestjs/config';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import HttpProxyService from '../http-proxy/http-proxy.service';
 
 @ApiTags('Images')
 @Controller({
@@ -18,7 +18,7 @@ import { AuthGuard } from '@nestjs/passport';
   version: '1',
 })
 export class ImageController {
-  private readonly httpProxy: HttProxy;
+  private readonly httpProxy: HttpProxyService;
   constructor(private readonly configService: ConfigService<AllConfigType>) {
     const imageUrl = this.configService.getOrThrow(
       'microservice.imageServiceUrl',
@@ -26,7 +26,7 @@ export class ImageController {
         infer: true,
       },
     );
-    this.httpProxy = new HttProxy(imageUrl);
+    this.httpProxy = new HttpProxyService(imageUrl);
   }
 
   @ApiBearerAuth()
@@ -36,6 +36,7 @@ export class ImageController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   imageIndex(@Request() req, @Res() res, next: () => void) {
+    console.log('imageIndex');
     this.httpProxy.httpProxy(req, res, next);
   }
 
