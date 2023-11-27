@@ -23,18 +23,17 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          yarn install
+          yarn build 
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
+      - name: Zip all files for upload between jobs
+        run: zip --symlinks -r nest.zip ./*
+        
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: release.zip
+          path: nest.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,7 +44,7 @@ jobs:
     
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: node-app
 
@@ -58,5 +57,8 @@ jobs:
         with:
           app-name: 'decamap-auth'
           slot-name: 'Production'
-          package: .
+          package:  nest.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6C68A2E5AE6D4186BD09D7231CB956D4 }}
+          
+      - name: Delete zip file
+        run: rm nest.zip
