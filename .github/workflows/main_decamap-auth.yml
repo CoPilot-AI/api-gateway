@@ -1,4 +1,3 @@
-
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
@@ -15,18 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
-      - name: yarn install, build, and test
+      - name: npm install, build, and test
         run: |
           yarn install
-          yarn build
-          
+          yarn build 
+
       - name: Zip all files for upload between jobs
         run: zip --symlinks -r nest.zip ./*
         
@@ -42,21 +41,24 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: node-app
 
+      - name: Unzip artifact for deployment
+        run: unzip nest.zip
+      
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'decamap-auth'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_92BBBA8FDF664392B551071C843D6195 }}
-          package: nest.zip
+          package:  nest.zip
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6C68A2E5AE6D4186BD09D7231CB956D4 }}
           
       - name: Delete zip file
         run: rm nest.zip
