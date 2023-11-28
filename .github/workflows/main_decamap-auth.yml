@@ -20,16 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - name: Setup Node.js and Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          # Set yarn version
-          # This line might vary based on the method you're using to install Yarn (npm or directly)
-          # Here's an example using npm to install a specific Yarn version
-          # Change the version number as per your requirement
-          # You might need to modify this depending on your actual setup for Yarn installation
-          # You could also use yarn directly if it's available in the environment
+      
           run: npm install -g yarn@1.22.19
 
       - name: Install dependencies
