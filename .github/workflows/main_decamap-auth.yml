@@ -19,16 +19,13 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '18.x'      
-          run: npm install -g yarn@1.22.19
+          node-version: '18.x'
 
-      - name: Install dependencies
-        run: yarn install
       - name: yarn install, build, and test
         run: |
           yarn install
-          yarn build 
-
+          yarn build
+          
       - name: Zip all files for upload between jobs
         run: zip --symlinks -r nest.zip ./*
         
