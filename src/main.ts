@@ -30,14 +30,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // I want to set the cors origin base on the NODE_ENV
-  // let corsOrigin =
-  //   process.env.NODE_ENV == 'production'
-  //     ? process.env.CORS_ORIGIN
-  //     : process.env.CORS_ORIGIN_DEV;
-  // app.enableCors({
-  //   origin: [corsOrigin ?? 'localhost:3000'],
-  //   methods: ['POST', 'PUT', 'DELETE', 'GET'],
-  // });
+  const corsOrigin =
+    process.env.NODE_ENV == 'production'
+      ? process.env.CORS_ORIGIN
+      : process.env.CORS_ORIGIN_DEV;
+  app.enableCors({
+    origin: [corsOrigin ?? 'localhost:3000'],
+    methods: ['POST', 'PUT', 'DELETE', 'GET'],
+  });
 
   const options = new DocumentBuilder()
     .setTitle('API')
