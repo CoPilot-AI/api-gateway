@@ -39,13 +39,14 @@ export class ImageController {
   // @UseGuards(HttpProxyGuard)
   @UseInterceptors(HttpProxyInterceptor)
   @Get()
-  async imageIndex(@Request() req, @Res() res, next: () => void) {
-    // req.headers['user_id'] = req.user.id;
-    console.log('request headers are: ', req.headers);
-    const result = await this.httpProxy.httpProxy(req, res, next);
-    console.log(result);
+  imageIndex(@Request() req, @Res() res, next: () => void) {
+    this.httpProxy.httpProxy(req, res, next);
   }
 
+  @ApiBearerAuth()
+  @SerializeOptions({
+    groups: ['me'],
+  })
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(HttpProxyInterceptor)
   @Get('/*')
