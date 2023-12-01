@@ -17,6 +17,10 @@ export class MailerService {
     if (!connectionString) {
       throw new Error('Missing mail connection string');
     }
+    console.log(
+      'Connected to email service with connection string: ',
+      connectionString,
+    );
     this.client = new EmailClient(connectionString);
   }
 
@@ -41,7 +45,7 @@ export class MailerService {
     const message = {
       senderAddress: mailOptions.from
         ? mailOptions.from
-        : this.configService.get('mail.defaultEmail', {
+        : this.configService.get('mail.senderAddress', {
             infer: true,
           }),
       recipients: {
@@ -53,6 +57,7 @@ export class MailerService {
       },
     };
     try {
+      console.log('message:', message);
       const poller = await this.client.beginSend(message);
 
       if (!poller.getOperationState().isStarted) {
