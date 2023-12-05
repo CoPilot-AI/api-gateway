@@ -12,12 +12,12 @@ export default class HttpProxyService {
       },
       changeOrigin: true,
       logLevel: 'debug',
-      //   onProxyReq: (Req, req, res) => {
-      //     // console.log(proxyReq);
-      //     console.log(
-      //       `[NestMiddleware]: Proxying ${req.method} request originally made to '${req.originalUrl}'...`,
-      //     );
-      //   },
+      // onProxyReq: (Req, req, res) => {
+      //   // console.log(proxyReq);
+      //   console.log(
+      //     `[NestMiddleware]: Proxying ${req.method} request originally made to '${req.originalUrl}'...`,
+      //   );
+      // },
     });
   }
 }

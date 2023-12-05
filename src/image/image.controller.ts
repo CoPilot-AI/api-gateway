@@ -1,16 +1,15 @@
 import {
   Controller,
   Get,
+  Post,
   Request,
   Res,
   SerializeOptions,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AllConfigType } from 'src/config/config.type';
 import { ConfigService } from '@nestjs/config';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import HttpProxyService from '../http-proxy/http-proxy.service';
 import { HttpProxyInterceptor } from 'src/http-proxy/http-proxy.interceptor';
 
@@ -35,7 +34,7 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @UseGuards(HttpProxyGuard)
   @UseInterceptors(HttpProxyInterceptor)
   @Get()
@@ -47,10 +46,21 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(HttpProxyInterceptor)
   @Get('/*')
   imageRest(@Request() req, @Res() res, next: () => void) {
+    this.httpProxy.httpProxy(req, res, next);
+  }
+
+  @ApiBearerAuth()
+  @SerializeOptions({
+    groups: ['me'],
+  })
+  // @UseGuards(AuthGuard('jwt'))
+  @UseInterceptors(HttpProxyInterceptor)
+  @Post('/*')
+  imagePost(@Request() req, @Res() res, next: () => void) {
     this.httpProxy.httpProxy(req, res, next);
   }
 }
