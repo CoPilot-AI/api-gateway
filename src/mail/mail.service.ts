@@ -95,7 +95,7 @@ export class MailService {
         title: newUserTitle,
         url: `${this.configService.get('app.frontendDomain', {
           infer: true,
-        })}/auth/activate-user?user_id=${mailData.data.user.id}`,
+        })}/admin/activate-user?user_id=${mailData.data.user.id}`,
         actionTitle: newUserTitle,
         app_name: this.configService.get('app.name', { infer: true }),
         admin_name: mailData.data.user.fullName,

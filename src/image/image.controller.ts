@@ -19,15 +19,14 @@ import { HttpProxyInterceptor } from 'src/http-proxy/http-proxy.interceptor';
   version: '1',
 })
 export class ImageController {
-  private readonly httpProxy: HttpProxyService;
+  private readonly imageRemoteUrl: string;
   constructor(private readonly configService: ConfigService<AllConfigType>) {
-    const imageUrl = this.configService.getOrThrow(
+    this.imageRemoteUrl = this.configService.getOrThrow(
       'microservice.imageServiceUrl',
       {
         infer: true,
       },
     );
-    this.httpProxy = new HttpProxyService(imageUrl);
   }
 
   @ApiBearerAuth()
@@ -39,7 +38,8 @@ export class ImageController {
   @UseInterceptors(HttpProxyInterceptor)
   @Get()
   imageIndex(@Request() req, @Res() res, next: () => void) {
-    this.httpProxy.httpProxy(req, res, next);
+    const httpProxy = new HttpProxyService(this.imageRemoteUrl);
+    httpProxy.httpProxy(req, res, next);
   }
 
   @ApiBearerAuth()
@@ -50,7 +50,8 @@ export class ImageController {
   @UseInterceptors(HttpProxyInterceptor)
   @Get('/*')
   imageRest(@Request() req, @Res() res, next: () => void) {
-    this.httpProxy.httpProxy(req, res, next);
+    const httpProxy = new HttpProxyService(this.imageRemoteUrl);
+    httpProxy.httpProxy(req, res, next);
   }
 
   @ApiBearerAuth()
@@ -61,6 +62,7 @@ export class ImageController {
   @UseInterceptors(HttpProxyInterceptor)
   @Post('/*')
   imagePost(@Request() req, @Res() res, next: () => void) {
-    this.httpProxy.httpProxy(req, res, next);
+    const httpProxy = new HttpProxyService(this.imageRemoteUrl);
+    httpProxy.httpProxy(req, res, next);
   }
 }
