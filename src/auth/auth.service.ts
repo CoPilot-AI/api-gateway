@@ -292,7 +292,7 @@ export class AuthService {
       id: StatusEnum.active,
     });
     await user.save();
-    this.prepareUser(user);
+    await this.prepareUser(user);
   }
   async prepareUser(user) {
     await this.channelService.createChannel({
