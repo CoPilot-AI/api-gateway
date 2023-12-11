@@ -32,6 +32,7 @@ import { JwtRefreshPayloadType } from './strategies/types/jwt-refresh-payload.ty
 import { Session } from 'src/session/entities/session.entity';
 import { JwtPayloadType } from './strategies/types/jwt-payload.type';
 import { AuthConfirmUser } from './dto/auth-confirm-user.dto';
+import { ChannelService } from 'src/channel/channel.service';
 @Injectable()
 export class AuthService {
   constructor(
@@ -41,6 +42,7 @@ export class AuthService {
     private sessionService: SessionService,
     private mailService: MailService,
     private configService: ConfigService<AllConfigType>,
+    private channelService: ChannelService,
   ) {}
 
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseType> {
@@ -290,6 +292,14 @@ export class AuthService {
       id: StatusEnum.active,
     });
     await user.save();
+    this.prepareUser(user);
+  }
+  async prepareUser(user) {
+    await this.channelService.createChannel({
+      title: `${user.firstName}'s Default`,
+      type: 'private',
+      user_id: user.id,
+    });
   }
   async forgotPassword(email: string): Promise<void> {
     const user = await this.usersService.findOne({

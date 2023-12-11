@@ -31,6 +31,7 @@ import { SessionModule } from './session/session.module';
 import { MailerModule } from './mailer/mailer.module';
 import { ImageModule } from './image/image.module';
 import { HttpProxyModule } from './http-proxy/http-proxy.module';
+import { ChannelModule } from './channel/channel.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { HttpProxyModule } from './http-proxy/http-proxy.module';
     HomeModule,
     ImageModule,
     HttpProxyModule,
+    ChannelModule,
   ],
 })
 export class AppModule {}
