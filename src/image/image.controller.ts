@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import HttpProxyService from '../http-proxy/http-proxy.service';
 import { HttpProxyInterceptor } from 'src/http-proxy/http-proxy.interceptor';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/strategies/optional-jwt.guard';
 
 @ApiTags('Images')
 @Controller({
@@ -37,8 +38,7 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
-  // @UseGuards(AuthGuard('jwt'))
-  // @UseGuards(HttpProxyGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(HttpProxyInterceptor)
   @Get()
   imageIndex(@Request() req, @Res() res, next: () => void) {
@@ -49,7 +49,7 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(HttpProxyInterceptor)
   @Get('/*')
   imageRest(@Request() req, @Res() res, next: () => void) {

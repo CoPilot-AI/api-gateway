@@ -17,6 +17,7 @@ export class HttpProxyInterceptor implements NestInterceptor {
     if (user) {
       request.headers['userid'] = user.id.toString();
     }
+    console.log('user id: ', request.headers['userid']);
 
     return next.handle();
   }
