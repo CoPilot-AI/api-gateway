@@ -82,6 +82,17 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
+  @UseGuards(AuthGuard('jwt'))
+  @UseInterceptors(HttpProxyInterceptor)
+  @Post('/save_images')
+  saveImage(@Request() req, @Res() res, next: () => void) {
+    this.httpProxy.httpProxy(req, res, next);
+  }
+
+  @ApiBearerAuth()
+  @SerializeOptions({
+    groups: ['me'],
+  })
   // @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(HttpProxyInterceptor)
   @Post('/*')
