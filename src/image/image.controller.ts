@@ -49,7 +49,7 @@ export class ImageController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(HttpProxyInterceptor)
   @Get('/*')
   imageRest(@Request() req, @Res() res, next: () => void) {

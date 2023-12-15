@@ -50,7 +50,7 @@ export class AuthService {
       email: loginDto.email,
     });
 
-    if (!user) {
+    if (!user || (user.status && user.status?.id != StatusEnum.active)) {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
