@@ -69,7 +69,7 @@ export class MailService {
 
     if (i18n) {
       [newUserTitle, text1, text2, text3] = await Promise.all([
-        i18n.t('common.newUser'),
+        i18n.t('common.activateUser'),
         i18n.t('new-user.text1'),
         i18n.t('new-user.text2'),
         i18n.t('new-user.text3'),
@@ -98,7 +98,9 @@ export class MailService {
         })}/admin/activate-user?user_id=${mailData.data.user.id}`,
         actionTitle: newUserTitle,
         app_name: this.configService.get('app.name', { infer: true }),
-        admin_name: mailData.data.user.fullName,
+        userName: mailData.data.user.fullName,
+        userEmail: mailData.data.user.email,
+        userId: mailData.data.user.id,
         text1,
         text2,
         text3,
@@ -152,6 +154,52 @@ export class MailService {
         text2,
         text3,
         text4,
+      },
+    });
+  }
+
+  async welcomeEmail(mailData: MailData<{ user: User }>): Promise<void> {
+    const i18n = I18nContext.current();
+    let welcomeEmailTile: MaybeType<string>;
+    let text1: MaybeType<string>;
+    let text2: MaybeType<string>;
+    let text3: MaybeType<string>;
+
+    if (i18n) {
+      [welcomeEmailTile, text1, text2, text3] = await Promise.all([
+        i18n.t('common.welcome'),
+        i18n.t('confirm-email.text1'),
+        i18n.t('confirm-email.text2'),
+        i18n.t('confirm-email.text3'),
+      ]);
+    }
+
+    void this.mailerService.sendMail({
+      to: mailData.to,
+      subject: welcomeEmailTile,
+      text: `${this.configService.get('app.frontendDomain', {
+        infer: true,
+      })}/auth/login`,
+      templatePath: path.join(
+        this.configService.getOrThrow('app.workingDirectory', {
+          infer: true,
+        }),
+        'src',
+        'mail',
+        'mail-templates',
+        'welcome-email.hbs',
+      ),
+      context: {
+        title: welcomeEmailTile,
+        url: `${this.configService.get('app.frontendDomain', {
+          infer: true,
+        })}/auth/login`,
+        app_name: this.configService.get('app.name', { infer: true }),
+        user: mailData.data.user,
+        actionTitle: 'Login',
+        text1,
+        text2,
+        text3,
       },
     });
   }

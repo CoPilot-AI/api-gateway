@@ -1,5 +1,7 @@
 {
   "confirmEmail": "Confirm email",
   "resetPassword": "Reset password",
-  "newUser": "New user"
+  "newUser": "New user",
+  "activateUser": "Activate user",
+  "welcome": "Welcome"
 }
