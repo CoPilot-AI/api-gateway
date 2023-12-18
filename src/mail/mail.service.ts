@@ -31,7 +31,7 @@ export class MailService {
       ]);
     }
 
-    await this.mailerService.sendMail({
+    void this.mailerService.sendMail({
       to: mailData.to,
       subject: emailConfirmTitle,
       text: `${this.configService.get('app.frontendDomain', {

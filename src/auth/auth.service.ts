@@ -214,7 +214,7 @@ export class AuthService {
       organization: dto.organization,
     });
 
-    await this.mailService.userSignUp({
+    void this.mailService.userSignUp({
       to: dto.email,
       data: {
         hash,
@@ -243,19 +243,19 @@ export class AuthService {
     });
     await user.save();
 
-    await this.newUserNotification(user);
+    void this.newUserNotification(user);
   }
 
-  async newUserNotification(user: User): Promise<void> {
+  async newUserNotification(user: User) {
     //fetch all admins
     //send email to all admins
     const admins = await this.usersService.findMany({
       filterOptions: { roles: [{ id: RoleEnum.admin } as Role] },
     });
 
-    admins.forEach(async (admin) => {
+    admins.forEach((admin) => {
       if (!admin.email) return;
-      await this.mailService.notifyAdmin({
+      void this.mailService.notifyAdmin({
         to: admin.email,
         data: {
           user,
@@ -296,7 +296,7 @@ export class AuthService {
   }
   async prepareUser(user) {
     await this.channelService.createChannel({
-      title: `${user.firstName}'s Default`,
+      title: `${user.firstName}s Default`,
       type: 'private',
       user_id: user.id,
     });
