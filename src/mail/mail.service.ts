@@ -160,23 +160,23 @@ export class MailService {
 
   async welcomeEmail(mailData: MailData<{ user: User }>): Promise<void> {
     const i18n = I18nContext.current();
-    let welcomeEmailTile: MaybeType<string>;
+    let welcomeEmailTitle: MaybeType<string>;
     let text1: MaybeType<string>;
     let text2: MaybeType<string>;
     let text3: MaybeType<string>;
 
     if (i18n) {
-      [welcomeEmailTile, text1, text2, text3] = await Promise.all([
+      [welcomeEmailTitle, text1, text2, text3] = await Promise.all([
         i18n.t('common.welcome'),
-        i18n.t('confirm-email.text1'),
-        i18n.t('confirm-email.text2'),
-        i18n.t('confirm-email.text3'),
+        i18n.t('welcome-email.text1'),
+        i18n.t('welcome-email.text2'),
+        i18n.t('welcome-email.text3'),
       ]);
     }
-
+    console.log('email content is', content);
     void this.mailerService.sendMail({
       to: mailData.to,
-      subject: welcomeEmailTile,
+      subject: welcomeEmailTitle,
       text: `${this.configService.get('app.frontendDomain', {
         infer: true,
       })}/auth/login`,
@@ -190,12 +190,12 @@ export class MailService {
         'welcome-email.hbs',
       ),
       context: {
-        title: welcomeEmailTile,
+        title: welcomeEmailTitle,
         url: `${this.configService.get('app.frontendDomain', {
           infer: true,
         })}/auth/login`,
         app_name: this.configService.get('app.name', { infer: true }),
-        user: mailData.data.user,
+        userName: mailData.data.user.fullName,
         actionTitle: 'Login',
         text1,
         text2,
