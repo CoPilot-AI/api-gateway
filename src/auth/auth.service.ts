@@ -292,7 +292,17 @@ export class AuthService {
       id: StatusEnum.active,
     });
     await user.save();
+    this.sendWelcomeEmail(user);
     await this.prepareUser(user);
+  }
+  sendWelcomeEmail(user: User) {
+    if (!user.email) return;
+    void this.mailService.welcomeEmail({
+      to: user.email,
+      data: {
+        user,
+      },
+    });
   }
   async prepareUser(user) {
     await this.channelService.createChannel({
