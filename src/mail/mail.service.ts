@@ -173,7 +173,7 @@ export class MailService {
         i18n.t('welcome-email.text3'),
       ]);
     }
-    console.log('email content is', content);
+
     void this.mailerService.sendMail({
       to: mailData.to,
       subject: welcomeEmailTitle,
