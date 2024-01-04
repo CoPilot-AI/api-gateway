@@ -12,7 +12,7 @@ export default class HttpProxyService {
       },
       changeOrigin: true,
       logLevel: 'debug',
-      selfHandleResponse: true,
+      selfHandleResponse: false,
     });
   }
 }
