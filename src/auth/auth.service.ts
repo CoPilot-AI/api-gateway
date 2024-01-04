@@ -337,7 +337,7 @@ export class AuthService {
       user,
     });
 
-    await this.mailService.forgotPassword({
+    return this.mailService.forgotPassword({
       to: email,
       data: {
         hash,
@@ -367,6 +367,11 @@ export class AuthService {
     const user = forgot.user;
     user.password = password;
 
+    if (user.status?.id == StatusEnum.inactive) {
+      user.status = plainToClass(Status, {
+        id: StatusEnum.confirmed,
+      });
+    }
     await this.sessionService.softDelete({
       user: {
         id: user.id,
